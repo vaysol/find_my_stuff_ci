@@ -36,11 +36,7 @@ class HouseholdMemberModel extends Model
         return $this->select('household_members.*, users.email, users.name')
             ->join('users', 'household_members.user_id = users.id')
             ->where('household_members.household_id', $householdId)
-            ->orderBy('CASE household_members.role 
-                WHEN "owner" THEN 1 
-                WHEN "admin" THEN 2 
-                WHEN "member" THEN 3 
-                END')
+            ->orderBy("FIELD(household_members.role, 'owner', 'admin', 'member')")
             ->orderBy('household_members.joined_at')
             ->findAll();
     }
